@@ -1,0 +1,10 @@
+{
+  "name": "@workspace/types",
+  "private": true,
+  "dependencies": {
+    "zod": "^4.0.15"
+  },
+  "exports": {
+    "./sentry": "./src/sentry.ts"
+  }
+}

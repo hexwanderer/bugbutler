@@ -1,0 +1,19 @@
+{
+  "name": "@workspace/listener",
+  "private": true,
+  "dependencies": {
+    "@orpc/openapi": "^1.7.10",
+    "@orpc/server": "^1.7.10",
+    "@orpc/zod": "^1.7.10",
+    "@workspace/types": "workspace:*",
+    "h3": "2.0.0-beta.3",
+    "zod": "^4.0.15"
+  },
+  "scripts": {
+    "dev": "NODE_ENV=development tsx watch src/index.ts",
+    "ci": "biome ci ."
+  },
+  "devDependencies": {
+    "@types/node": "^20"
+  }
+}

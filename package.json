@@ -1,0 +1,25 @@
+{
+  "name": "bugbutler",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "check": "pnpm exec biome check",
+    "check:fix": "pnpm exec biome check --write",
+    "check:fixall": "pnpm exec biome check --write --unsafe",
+    "ci": "pnpm exec biome ci .",
+    "check-types": "turbo run check-types"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.1.2",
+    "husky": "^9.1.7",
+    "tsx": "^4.20.3",
+    "turbo": "^2.5.5",
+    "typescript": "5.8.3",
+    "ultracite": "5.1.2"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=18"
+  }
+}
