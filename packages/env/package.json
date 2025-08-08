@@ -1,0 +1,15 @@
+{
+  "name": "@workspace/env",
+  "private": true,
+  "dependencies": {
+    "@t3-oss/env-core": "^0.13.8",
+    "dotenv": "^17.2.1",
+    "zod": "^4.0.15"
+  },
+  "devDependencies": {
+    "@types/node": "^20"
+  },
+  "exports": {
+    ".": "./src/env.ts"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "@workspace/db",
+  "private": true,
+  "dependencies": {
+    "@workspace/env": "workspace:*",
+    "dotenv": "^17.2.1",
+    "drizzle-orm": "^0.44.4",
+    "pg": "^8.16.3",
+    "uuid": "^11.1.0",
+    "zod": "^4.0.15"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.9",
+    "@types/pg": "^8.15.5",
+    "drizzle-kit": "^0.31.4",
+    "tsx": "^4.20.3"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "dev": "drizzle-kit studio",
+    "db:push": "drizzle-kit push"
+  }
+}
