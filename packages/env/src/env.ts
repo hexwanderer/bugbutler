@@ -13,6 +13,9 @@ export default createEnv({
     PGPASSWORD: z.string(),
 
     MASTER_KEY: z.string(),
+
+    SENTRY_CLIENT_ID: z.string(),
+    SENTRY_CLIENT_SECRET: z.string(),
   },
   runtimeEnv: process.env,
 });

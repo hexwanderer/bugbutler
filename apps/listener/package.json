@@ -1,10 +1,11 @@
 {
   "name": "@workspace/listener",
   "private": true,
+  "scripts": {
+    "build": "nitro build",
+    "dev": "PORT=57000 nitro dev"
+  },
   "dependencies": {
-    "@orpc/openapi": "^1.7.10",
-    "@orpc/server": "^1.7.10",
-    "@orpc/zod": "^1.7.10",
     "@workspace/db": "workspace:*",
     "@workspace/env": "workspace:*",
     "@workspace/types": "workspace:*",
@@ -13,11 +14,8 @@
     "uuid": "^11.1.0",
     "zod": "^4.0.15"
   },
-  "scripts": {
-    "dev": "dotenv -f ../../.env -- tsx watch src/index.ts",
-    "ci": "biome ci ."
-  },
   "devDependencies": {
-    "@types/node": "^20"
+    "h3": "^2.0.0-beta.3",
+    "nitro": "npm:nitro-nightly@latest"
   }
 }

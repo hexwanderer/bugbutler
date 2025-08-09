@@ -5,7 +5,6 @@ export const eventSchema = z.object({
   installation: z.object({
     uuid: z.uuid(),
   }),
-  data: z.any(),
   actor: z.object({
     type: z.literal('user'),
     id: z.number(),
@@ -47,3 +46,20 @@ export const installationSchema = z.object({
   refreshToken: z.string(),
   tokenLastCharacters: z.string(),
 });
+
+export function getEventSchema(resource: 'error' | 'installation') {
+  switch (resource) {
+    case 'error':
+      return z.object({
+        ...eventSchema,
+        data: errorHookSchema,
+      });
+    case 'installation':
+      return z.object({
+        ...eventSchema,
+        data: installationHookSchema,
+      });
+    default:
+      throw new Error('Invalid resource');
+  }
+}
