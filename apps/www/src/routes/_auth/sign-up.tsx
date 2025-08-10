@@ -1,12 +1,17 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 import { Card, CardHeader, CardTitle } from '@workspace/ui/components/card';
 import { toast } from '@workspace/ui/components/sonner';
 import { z } from 'zod';
-import { authClient } from '../../integrations/auth';
-import { useAppForm } from '../../integrations/form';
+import { authClient } from '@/integrations/auth';
+import { useAppForm } from '@/integrations/form';
 
 export const Route = createFileRoute('/_auth/sign-up')({
   component: RouteComponent,
+  beforeLoad: ({ context }) => {
+    if (context.session) {
+      throw redirect({ to: '/' });
+    }
+  },
 });
 
 const signUpSchema = z.object({

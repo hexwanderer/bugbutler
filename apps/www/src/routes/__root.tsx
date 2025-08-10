@@ -2,12 +2,11 @@ import type { QueryClient } from '@tanstack/react-query';
 import {
   createRootRouteWithContext,
   Outlet,
-  redirect,
   useRouter,
 } from '@tanstack/react-router';
 import type { Session, User } from 'better-auth';
-import { authClient } from '../integrations/auth';
-import LayoutAddition from '../integrations/devtools';
+import { authClient } from '@/integrations/auth';
+import LayoutAddition from '@/integrations/devtools';
 
 interface Context {
   queryClient: QueryClient;
@@ -18,7 +17,7 @@ interface Context {
 export const Route = createRootRouteWithContext<Context>()({
   component: RootComponent,
   beforeLoad: async ({ context }) => {
-    const result = await context.queryClient.ensureQueryData({
+    const result = await context.queryClient.fetchQuery({
       queryKey: ['__auth__'],
       queryFn: async () => {
         const { data, error } = await authClient.getSession();
@@ -28,9 +27,7 @@ export const Route = createRootRouteWithContext<Context>()({
         return data;
       },
     });
-    if (!(result?.session && result?.user)) {
-      throw redirect({ to: '/sign-in' });
-    }
+    return result;
   },
 });
 
