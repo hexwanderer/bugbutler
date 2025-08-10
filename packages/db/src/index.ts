@@ -11,5 +11,3 @@ export const db = drizzle({
   },
   casing: 'snake_case',
 });
-
-export * from './schema';

@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "build": "nitro build",
-    "dev": "PORT=57000 nitro dev"
+    "dev": "PORT=57000 nitro dev",
+    "auth:generate": "pnpm dlx @better-auth/cli generate --output=../../packages/db/src/schema/auth.schema.ts"
   },
   "dependencies": {
     "@workspace/db": "workspace:*",

@@ -1,4 +1,6 @@
 import { db } from '@workspace/db';
+// biome-ignore lint/performance/noNamespaceImport: whatever
+import * as authSchema from '@workspace/db/auth.schema';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { organization } from 'better-auth/plugins';
@@ -8,6 +10,7 @@ export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: 'pg',
     usePlural: true,
+    schema: authSchema,
   }),
   emailAndPassword: {
     enabled: true,

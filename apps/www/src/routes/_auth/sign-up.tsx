@@ -27,8 +27,9 @@ function RouteComponent() {
       onChange: signUpSchema,
     },
     onSubmit: ({ value }) => {
-      authClient.signIn.email(
+      authClient.signUp.email(
         {
+          name: value.name,
           email: value.email,
           password: value.password,
         },

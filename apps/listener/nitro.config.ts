@@ -28,4 +28,15 @@ export default defineNitroConfig({
   alias: {
     '@': resolve(process.cwd(), 'src'),
   },
+  routeRules: {
+    '/api/**': {
+      cors: true,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': '*',
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Credentials': 'true',
+      },
+    },
+  },
 });

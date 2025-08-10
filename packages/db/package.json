@@ -16,7 +16,9 @@
     "tsx": "^4.20.3"
   },
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./schema": "./src/schema/index.ts",
+    "./auth.schema": "./src/schema/auth.schema.ts"
   },
   "scripts": {
     "dev": "drizzle-kit studio",

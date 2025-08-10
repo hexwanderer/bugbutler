@@ -1,4 +1,5 @@
-import { db, installations } from '@workspace/db';
+import { db } from '@workspace/db';
+import { installations } from '@workspace/db/schema';
 import env from '@workspace/env';
 import { installationSchema } from '@workspace/types/sentry';
 import { eventHandler, redirect } from 'h3';
