@@ -1,4 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
+import { Button } from '@workspace/ui/components/button';
 
 export const Route = createFileRoute('/')({
   component: Index,
@@ -6,8 +7,15 @@ export const Route = createFileRoute('/')({
 
 function Index() {
   return (
-    <div className="p-2">
-      <h3>Welcome Home!</h3>
-    </div>
+    <>
+      <div className="flex items-center justify-end gap-2 p-2">
+        <Link className="align-end" to="/sign-in">
+          <Button>Sign In</Button>
+        </Link>
+      </div>
+      <div className="p-2">
+        <h3>Welcome Home!</h3>
+      </div>
+    </>
   );
 }
