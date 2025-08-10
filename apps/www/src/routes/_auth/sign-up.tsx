@@ -5,12 +5,13 @@ import { z } from 'zod';
 import { authClient } from '../../integrations/auth';
 import { useAppForm } from '../../integrations/form';
 
-export const Route = createFileRoute('/_auth/sign-in')({
+export const Route = createFileRoute('/_auth/sign-up')({
   component: RouteComponent,
 });
 
-const signInSchema = z.object({
-  email: z.string().email(),
+const signUpSchema = z.object({
+  name: z.string().min(2),
+  email: z.email(),
   password: z.string().min(8),
 });
 
@@ -18,11 +19,12 @@ function RouteComponent() {
   const navigate = Route.useNavigate();
   const form = useAppForm({
     defaultValues: {
+      name: '',
       email: '',
       password: '',
     },
     validators: {
-      onChange: signInSchema,
+      onChange: signUpSchema,
     },
     onSubmit: ({ value }) => {
       authClient.signIn.email(
@@ -32,7 +34,7 @@ function RouteComponent() {
         },
         {
           onSuccess: () => {
-            toast.success('Signed in successfully!');
+            toast.success('Signed up successfully!');
             navigate({ to: '/' });
           },
         }
@@ -44,7 +46,7 @@ function RouteComponent() {
     <div className="flex min-h-screen items-center justify-center">
       <Card className="mx-auto w-md">
         <CardHeader>
-          <CardTitle>Sign In</CardTitle>
+          <CardTitle>Sign Up</CardTitle>
         </CardHeader>
         <form
           className="flex flex-col gap-2 p-6"
@@ -54,6 +56,10 @@ function RouteComponent() {
             form.handleSubmit();
           }}
         >
+          <form.AppField name="name">
+            {(field) => <field.InputField label="Name" />}
+          </form.AppField>
+
           <form.AppField name="email">
             {(field) => <field.InputField label="Email" />}
           </form.AppField>
