@@ -3,9 +3,29 @@
   "extends": ["ultracite"],
   "linter": {
     "rules": {
+      "style": {
+        // nextjs rule, does not apply with tanstack
+        "noHeadElement": "off"
+      },
       "suspicious": {
         "noConsole": "warn"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes":[ "**/*.json" ],
+      "linter": {
+        "enabled": false
+      },
+      "formatter": {
+        "enabled": false
+      },
+      "json": {
+        "linter": {
+          "enabled": false
+        }
+      }
+    }
+  ]
 }
