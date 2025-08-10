@@ -14,7 +14,7 @@ function Index() {
         </Link>
       </div>
       <div className="p-2">
-        <h3>Welcome Home!</h3>
+        <p>Hello World!</p>
       </div>
     </>
   );

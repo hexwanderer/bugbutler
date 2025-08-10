@@ -10,7 +10,7 @@ export const Route = createFileRoute('/_auth/sign-in')({
 });
 
 const signInSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   password: z.string().min(8),
 });
 
@@ -24,8 +24,8 @@ function RouteComponent() {
     validators: {
       onChange: signInSchema,
     },
-    onSubmit: ({ value }) => {
-      authClient.signIn.email(
+    onSubmit: async ({ value }) => {
+      await authClient.signIn.email(
         {
           email: value.email,
           password: value.password,
