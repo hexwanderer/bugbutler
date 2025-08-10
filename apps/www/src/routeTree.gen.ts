@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
+import { Route as AuthOrgsIndexRouteImport } from './routes/_auth/orgs.index'
+import { Route as AuthOrgsCreateRouteImport } from './routes/_auth/orgs.create'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +30,59 @@ const AuthSignInRoute = AuthSignInRouteImport.update({
   path: '/sign-in',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthOrgsIndexRoute = AuthOrgsIndexRouteImport.update({
+  id: '/_auth/orgs/',
+  path: '/orgs/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthOrgsCreateRoute = AuthOrgsCreateRouteImport.update({
+  id: '/_auth/orgs/create',
+  path: '/orgs/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
+  '/orgs/create': typeof AuthOrgsCreateRoute
+  '/orgs': typeof AuthOrgsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
+  '/orgs/create': typeof AuthOrgsCreateRoute
+  '/orgs': typeof AuthOrgsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_auth/sign-in': typeof AuthSignInRoute
   '/_auth/sign-up': typeof AuthSignUpRoute
+  '/_auth/orgs/create': typeof AuthOrgsCreateRoute
+  '/_auth/orgs/': typeof AuthOrgsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sign-in' | '/sign-up'
+  fullPaths: '/' | '/sign-in' | '/sign-up' | '/orgs/create' | '/orgs'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sign-in' | '/sign-up'
-  id: '__root__' | '/' | '/_auth/sign-in' | '/_auth/sign-up'
+  to: '/' | '/sign-in' | '/sign-up' | '/orgs/create' | '/orgs'
+  id:
+    | '__root__'
+    | '/'
+    | '/_auth/sign-in'
+    | '/_auth/sign-up'
+    | '/_auth/orgs/create'
+    | '/_auth/orgs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthSignInRoute: typeof AuthSignInRoute
   AuthSignUpRoute: typeof AuthSignUpRoute
+  AuthOrgsCreateRoute: typeof AuthOrgsCreateRoute
+  AuthOrgsIndexRoute: typeof AuthOrgsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +108,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignInRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_auth/orgs/': {
+      id: '/_auth/orgs/'
+      path: '/orgs'
+      fullPath: '/orgs'
+      preLoaderRoute: typeof AuthOrgsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth/orgs/create': {
+      id: '/_auth/orgs/create'
+      path: '/orgs/create'
+      fullPath: '/orgs/create'
+      preLoaderRoute: typeof AuthOrgsCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +129,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthSignInRoute: AuthSignInRoute,
   AuthSignUpRoute: AuthSignUpRoute,
+  AuthOrgsCreateRoute: AuthOrgsCreateRoute,
+  AuthOrgsIndexRoute: AuthOrgsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

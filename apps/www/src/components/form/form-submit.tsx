@@ -1,4 +1,5 @@
-import { Button } from '@workspace/ui/components/button';
+import { AnimatedButton } from '@workspace/ui/components/animated-button';
+import type { Button } from '@workspace/ui/components/button';
 import { cn } from '@workspace/ui/lib/utils';
 import { useFormContext } from '../../integrations/form';
 
@@ -7,12 +8,28 @@ export function FormSubmit({
   formId,
   className,
   disabled,
+  fillColor, // allow passing fillColor through
   ...props
 }: React.ComponentProps<typeof Button> & {
   label: string;
   formId?: string;
+  fillColor?: string;
 }) {
   const form = useFormContext();
+
+  // Map normal variants to animated variants
+  const mapToAnimatedVariant = (
+    variant?: string
+  ): 'default' | 'outline' | 'ghost' => {
+    switch (variant) {
+      case 'outline':
+        return 'outline';
+      case 'ghost':
+        return 'ghost';
+      default:
+        return 'default';
+    }
+  };
 
   return (
     <form.Subscribe
@@ -24,7 +41,9 @@ export function FormSubmit({
     >
       {({ isSubmitting, isValid, errorMap }) => (
         <>
-          <Button
+          <AnimatedButton
+            fillColor={fillColor || 'bg-accent'}
+            variant={mapToAnimatedVariant(props.variant as string)}
             {...props}
             className={cn('w-full', className)}
             disabled={isSubmitting || !isValid || disabled}
@@ -32,7 +51,8 @@ export function FormSubmit({
             type="submit"
           >
             {label}
-          </Button>
+          </AnimatedButton>
+
           {errorMap && Object.keys(errorMap).length > 0 && (
             <div className="flex flex-col gap-2">
               {Object.values(errorMap).map((err, index) => {
@@ -51,7 +71,7 @@ export function FormSubmit({
                     </p>
                   );
                 }
-                return null; // Skip invalid error entries
+                return null;
               })}
             </div>
           )}

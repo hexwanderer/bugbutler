@@ -2,6 +2,7 @@ import type { QueryClient } from '@tanstack/react-query';
 import {
   createRootRouteWithContext,
   Outlet,
+  redirect,
   useRouter,
 } from '@tanstack/react-router';
 import type { Session, User } from 'better-auth';
@@ -28,6 +29,15 @@ export const Route = createRootRouteWithContext<Context>()({
       },
     });
     return result;
+  },
+  loader: ({ context, location }) => {
+    if (
+      location.pathname !== '/sign-in' &&
+      location.pathname !== '/sign-up' &&
+      !context.session
+    ) {
+      throw redirect({ to: '/sign-in' });
+    }
   },
 });
 

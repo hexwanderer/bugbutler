@@ -1,4 +1,4 @@
-import { createFileRoute, Link, redirect } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import {
   Card,
   CardContent,
@@ -7,46 +7,40 @@ import {
   CardTitle,
 } from '@workspace/ui/components/card';
 import { toast } from '@workspace/ui/components/sonner';
-import { z } from 'zod';
+import z from 'zod';
 import { authClient } from '@/integrations/auth';
 import { useAppForm } from '@/integrations/form';
 
-export const Route = createFileRoute('/_auth/sign-up')({
+export const Route = createFileRoute('/_auth/orgs/create')({
   component: RouteComponent,
-  beforeLoad: ({ context }) => {
-    if (context.session) {
-      throw redirect({ to: '/' });
-    }
-  },
 });
 
-const signUpSchema = z.object({
+const orgCreateSchema = z.object({
   name: z.string().min(2),
-  email: z.email(),
-  password: z.string().min(8),
+  slug: z.string().min(2),
 });
 
 function RouteComponent() {
   const navigate = Route.useNavigate();
+  const { queryClient } = Route.useRouteContext();
   const form = useAppForm({
     defaultValues: {
       name: '',
-      email: '',
-      password: '',
+      slug: '',
     },
     validators: {
-      onChange: signUpSchema,
+      onChange: orgCreateSchema,
     },
-    onSubmit: ({ value }) => {
-      authClient.signUp.email(
+    onSubmit: async ({ value }) => {
+      await authClient.organization.create(
         {
           name: value.name,
-          email: value.email,
-          password: value.password,
+          slug: value.slug,
         },
         {
           onSuccess: () => {
-            toast.success('Signed up successfully!');
+            toast.success('Organization created successfully!');
+            queryClient.resetQueries({ queryKey: ['__orgs__'] });
             navigate({ to: '/orgs' });
           },
         }
@@ -58,7 +52,7 @@ function RouteComponent() {
     <div className="flex min-h-screen items-center justify-center">
       <Card className="mx-auto w-md">
         <CardHeader>
-          <CardTitle>Sign Up</CardTitle>
+          <CardTitle>Create Organization</CardTitle>
         </CardHeader>
         <CardContent>
           <form
@@ -73,24 +67,20 @@ function RouteComponent() {
               {(field) => <field.InputField label="Name" />}
             </form.AppField>
 
-            <form.AppField name="email">
-              {(field) => <field.InputField label="Email" />}
-            </form.AppField>
-
-            <form.AppField name="password">
-              {(field) => <field.InputField label="Password" type="password" />}
+            <form.AppField name="slug">
+              {(field) => <field.InputField label="Slug" />}
             </form.AppField>
 
             <form.AppForm>
-              <form.FormSubmit className="mt-4" label="SIGN UP" />
+              <form.FormSubmit className="mt-4" label="Create" />
             </form.AppForm>
           </form>
         </CardContent>
         <CardFooter>
           <p>
-            Already have an account?
-            <Link className="ml-2 underline" to="/sign-in">
-              Sign In
+            Already have an organization?
+            <Link className="ml-2 underline" to="/orgs">
+              Select existing organization
             </Link>
           </p>
         </CardFooter>

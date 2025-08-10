@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/a11y/useButtonType: known issue */
 'use client';
 
 import { mergeProps } from '@base-ui-components/react';

@@ -1,5 +1,11 @@
-import { createFileRoute, redirect } from '@tanstack/react-router';
-import { Card, CardHeader, CardTitle } from '@workspace/ui/components/card';
+import { createFileRoute, Link, redirect } from '@tanstack/react-router';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@workspace/ui/components/card';
 import { toast } from '@workspace/ui/components/sonner';
 import { z } from 'zod';
 import { authClient } from '@/integrations/auth';
@@ -39,7 +45,7 @@ function RouteComponent() {
         {
           onSuccess: () => {
             toast.success('Signed in successfully!');
-            navigate({ to: '/' });
+            navigate({ to: '/orgs' });
           },
         }
       );
@@ -52,26 +58,36 @@ function RouteComponent() {
         <CardHeader>
           <CardTitle>Sign In</CardTitle>
         </CardHeader>
-        <form
-          className="flex flex-col gap-2 p-6"
-          onSubmit={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            form.handleSubmit();
-          }}
-        >
-          <form.AppField name="email">
-            {(field) => <field.InputField label="Email" />}
-          </form.AppField>
+        <CardContent>
+          <form
+            className="flex flex-col gap-2"
+            onSubmit={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              form.handleSubmit();
+            }}
+          >
+            <form.AppField name="email">
+              {(field) => <field.InputField label="Email" />}
+            </form.AppField>
 
-          <form.AppField name="password">
-            {(field) => <field.InputField label="Password" type="password" />}
-          </form.AppField>
+            <form.AppField name="password">
+              {(field) => <field.InputField label="Password" type="password" />}
+            </form.AppField>
 
-          <form.AppForm>
-            <form.FormSubmit className="mt-4" label="Sign In" />
-          </form.AppForm>
-        </form>
+            <form.AppForm>
+              <form.FormSubmit className="mt-4" label="SIGN IN" />
+            </form.AppForm>
+          </form>
+        </CardContent>
+        <CardFooter>
+          <p>
+            Don't have an account?
+            <Link className="ml-2 underline" to="/sign-up">
+              Sign Up
+            </Link>
+          </p>
+        </CardFooter>
       </Card>
     </div>
   );
