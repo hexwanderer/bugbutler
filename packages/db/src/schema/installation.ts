@@ -7,6 +7,7 @@ import {
   uuid,
 } from 'drizzle-orm/pg-core';
 import { v7 as uuidv7 } from 'uuid';
+import { organizations } from './auth.schema';
 
 export const installations = pgTable(
   'installations',
@@ -15,8 +16,13 @@ export const installations = pgTable(
       .primaryKey()
       .$defaultFn(() => uuidv7()),
     sentryId: uuid().notNull(),
-    organizationId: integer(),
-    organizationSlug: text(),
+    sentryOrganizationId: integer(),
+    sentryOrganizationSlug: text(),
+    organizationId: text()
+      .notNull()
+      .references(() => organizations.id, {
+        onDelete: 'cascade',
+      }),
     expiresAt: timestamp({
       withTimezone: true,
     }).notNull(),

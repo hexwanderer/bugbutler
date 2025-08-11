@@ -7,8 +7,10 @@
     "auth:generate": "pnpm dlx @better-auth/cli generate --output=../../packages/db/src/schema/auth.schema.ts"
   },
   "dependencies": {
+    "@orpc/server": "^1.8.0",
     "@workspace/db": "workspace:*",
     "@workspace/env": "workspace:*",
+    "@workspace/rpc": "workspace:*",
     "@workspace/types": "workspace:*",
     "better-auth": "^1.3.4",
     "drizzle-orm": "^0.44.4",

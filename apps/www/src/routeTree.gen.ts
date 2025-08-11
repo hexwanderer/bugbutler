@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as IntegrationsRouteImport } from './routes/integrations'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as InstallationsSentryRouteImport } from './routes/installations/sentry'
 import { Route as AuthSignUpRouteImport } from './routes/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
 import { Route as AuthOrgsIndexRouteImport } from './routes/_auth/orgs.index'
@@ -30,6 +31,11 @@ const IntegrationsRoute = IntegrationsRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InstallationsSentryRoute = InstallationsSentryRouteImport.update({
+  id: '/installations/sentry',
+  path: '/installations/sentry',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthSignUpRoute = AuthSignUpRouteImport.update({
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/projects': typeof ProjectsRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
+  '/installations/sentry': typeof InstallationsSentryRoute
   '/orgs/create': typeof AuthOrgsCreateRoute
   '/orgs': typeof AuthOrgsIndexRoute
 }
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/projects': typeof ProjectsRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
+  '/installations/sentry': typeof InstallationsSentryRoute
   '/orgs/create': typeof AuthOrgsCreateRoute
   '/orgs': typeof AuthOrgsIndexRoute
 }
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/projects': typeof ProjectsRoute
   '/_auth/sign-in': typeof AuthSignInRoute
   '/_auth/sign-up': typeof AuthSignUpRoute
+  '/installations/sentry': typeof InstallationsSentryRoute
   '/_auth/orgs/create': typeof AuthOrgsCreateRoute
   '/_auth/orgs/': typeof AuthOrgsIndexRoute
 }
@@ -89,6 +98,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/sign-in'
     | '/sign-up'
+    | '/installations/sentry'
     | '/orgs/create'
     | '/orgs'
   fileRoutesByTo: FileRoutesByTo
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/sign-in'
     | '/sign-up'
+    | '/installations/sentry'
     | '/orgs/create'
     | '/orgs'
   id:
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/_auth/sign-in'
     | '/_auth/sign-up'
+    | '/installations/sentry'
     | '/_auth/orgs/create'
     | '/_auth/orgs/'
   fileRoutesById: FileRoutesById
@@ -117,6 +129,7 @@ export interface RootRouteChildren {
   ProjectsRoute: typeof ProjectsRoute
   AuthSignInRoute: typeof AuthSignInRoute
   AuthSignUpRoute: typeof AuthSignUpRoute
+  InstallationsSentryRoute: typeof InstallationsSentryRoute
   AuthOrgsCreateRoute: typeof AuthOrgsCreateRoute
   AuthOrgsIndexRoute: typeof AuthOrgsIndexRoute
 }
@@ -142,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/installations/sentry': {
+      id: '/installations/sentry'
+      path: '/installations/sentry'
+      fullPath: '/installations/sentry'
+      preLoaderRoute: typeof InstallationsSentryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth/sign-up': {
@@ -181,6 +201,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsRoute: ProjectsRoute,
   AuthSignInRoute: AuthSignInRoute,
   AuthSignUpRoute: AuthSignUpRoute,
+  InstallationsSentryRoute: InstallationsSentryRoute,
   AuthOrgsCreateRoute: AuthOrgsCreateRoute,
   AuthOrgsIndexRoute: AuthOrgsIndexRoute,
 }

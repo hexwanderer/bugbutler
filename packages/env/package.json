@@ -7,7 +7,7 @@
     "zod": "^4.0.15"
   },
   "devDependencies": {
-    "@types/node": "^20"
+    "@types/node": "^24.2.1"
   },
   "exports": {
     ".": "./src/env.ts"
