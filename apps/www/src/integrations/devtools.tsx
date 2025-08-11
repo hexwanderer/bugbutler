@@ -14,7 +14,15 @@ export default function LayoutAddition({ router }: { router: AnyRouter }) {
           },
         ]}
       />
-      <Toaster />
+      <Toaster
+        toastOptions={{
+          classNames: {
+            title: 'font-sans',
+            description: 'font-sans',
+            actionButton: 'font-sans',
+          },
+        }}
+      />
     </>
   );
 }

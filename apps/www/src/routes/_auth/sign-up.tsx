@@ -1,3 +1,4 @@
+import { PencilLineIcon } from '@phosphor-icons/react';
 import { createFileRoute, Link, redirect } from '@tanstack/react-router';
 import {
   Card,
@@ -6,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@workspace/ui/components/card';
+import { Label } from '@workspace/ui/components/label';
 import { toast } from '@workspace/ui/components/sonner';
 import { z } from 'zod';
 import { authClient } from '@/integrations/auth';
@@ -82,7 +84,10 @@ function RouteComponent() {
             </form.AppField>
 
             <form.AppForm>
-              <form.FormSubmit className="mt-4" label="SIGN UP" />
+              <form.FormSubmit className="mt-4">
+                <PencilLineIcon className="h-4 w-4" />
+                <Label>SIGN UP</Label>
+              </form.FormSubmit>
             </form.AppForm>
           </form>
         </CardContent>

@@ -3,9 +3,11 @@ import {
   createRootRouteWithContext,
   Outlet,
   redirect,
+  useLocation,
   useRouter,
 } from '@tanstack/react-router';
 import type { Session, User } from 'better-auth';
+import { AppSidebar } from '@/components/sidebar';
 import { authClient } from '@/integrations/auth';
 import LayoutAddition from '@/integrations/devtools';
 
@@ -43,10 +45,26 @@ export const Route = createRootRouteWithContext<Context>()({
 
 function RootComponent() {
   const router = useRouter();
+  const location = useLocation();
+  if (
+    ['/sign-in', '/sign-up', '/orgs', '/orgs/create'].includes(
+      location.pathname
+    )
+  ) {
+    return (
+      <>
+        <Outlet />
+        <LayoutAddition router={router} />
+      </>
+    );
+  }
+
   return (
-    <>
-      <Outlet />
-      <LayoutAddition router={router} />
-    </>
+    <div className="root">
+      <AppSidebar>
+        <Outlet />
+        <LayoutAddition router={router} />
+      </AppSidebar>
+    </div>
   );
 }

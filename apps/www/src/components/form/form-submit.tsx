@@ -4,16 +4,16 @@ import { cn } from '@workspace/ui/lib/utils';
 import { useFormContext } from '../../integrations/form';
 
 export function FormSubmit({
-  label,
   formId,
   className,
   disabled,
   fillColor, // allow passing fillColor through
+  children,
   ...props
 }: React.ComponentProps<typeof Button> & {
-  label: string;
   formId?: string;
   fillColor?: string;
+  children: React.ReactNode;
 }) {
   const form = useFormContext();
 
@@ -43,14 +43,15 @@ export function FormSubmit({
         <>
           <AnimatedButton
             fillColor={fillColor || 'bg-accent'}
-            variant={mapToAnimatedVariant(props.variant as string)}
             {...props}
             className={cn('w-full', className)}
             disabled={isSubmitting || !isValid || disabled}
             form={formId}
+            size={props.size as 'sm' | 'md' | 'lg'}
             type="submit"
+            variant={mapToAnimatedVariant(props.variant as string)}
           >
-            {label}
+            {children}
           </AnimatedButton>
 
           {errorMap && Object.keys(errorMap).length > 0 && (

@@ -3,6 +3,9 @@
   "extends": ["ultracite"],
   "linter": {
     "rules": {
+      "performance": {
+        "noImgElement": "off"
+      },
       "style": {
         // nextjs rule, does not apply with tanstack
         "noHeadElement": "off"
