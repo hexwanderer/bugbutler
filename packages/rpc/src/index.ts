@@ -63,15 +63,21 @@ const installApp = os
         dateCreated: data.dateCreated,
       });
 
-      await fetch(SENTRY_VERIFY_URL(input.installationId), {
+      const resp = await fetch(SENTRY_VERIFY_URL(input.installationId), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${data.token}`,
         },
         body: JSON.stringify({
           status: 'installed',
         }),
       });
+      if (!resp.ok) {
+        throw new ORPCError('INTERNAL_SERVER_ERROR', {
+          message: `Failed to verify installation: ${response.status}`,
+        });
+      }
 
       return;
     } catch (error) {
