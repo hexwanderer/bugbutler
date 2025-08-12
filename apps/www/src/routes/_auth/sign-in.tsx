@@ -13,8 +13,13 @@ import { z } from 'zod';
 import { authClient } from '@/integrations/auth';
 import { useAppForm } from '@/integrations/form';
 
+const searchSchema = z.object({
+  redirect_url: z.string().optional(),
+});
+
 export const Route = createFileRoute('/_auth/sign-in')({
   component: RouteComponent,
+  validateSearch: searchSchema,
   beforeLoad: ({ context }) => {
     if (context.session) {
       throw redirect({ to: '/' });
@@ -29,6 +34,7 @@ const signInSchema = z.object({
 
 function RouteComponent() {
   const navigate = Route.useNavigate();
+  const { redirect_url } = Route.useSearch();
 
   const form = useAppForm({
     defaultValues: {
@@ -48,7 +54,7 @@ function RouteComponent() {
           onSuccess: ({ data }) => {
             localStorage.setItem('bearer_token', data.token);
             toast.success('Signed in successfully!');
-            navigate({ to: '/orgs' });
+            navigate({ to: '/orgs', search: { redirect_url } });
           },
         }
       );
@@ -89,7 +95,11 @@ function RouteComponent() {
         <CardFooter>
           <p>
             Don't have an account?
-            <Link className="ml-2 underline" to="/sign-up">
+            <Link
+              className="ml-2 underline"
+              search={{ redirect_url }}
+              to="/sign-up"
+            >
               Sign Up
             </Link>
           </p>

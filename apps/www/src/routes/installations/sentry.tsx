@@ -25,7 +25,9 @@ function RouteComponent() {
       onSuccess: () => {
         toast.success('Sentry installed successfully! Redirecting...');
         setTimeout(() => {
-          navigate({ href: 'https://sentry.io/settings/' });
+          navigate({
+            href: 'https://sentry.io/settings/sentry-apps/bugbutler',
+          });
         }, 1000);
       },
       onError: (error) => {

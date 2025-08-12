@@ -13,8 +13,13 @@ import z from 'zod';
 import { authClient } from '@/integrations/auth';
 import { useAppForm } from '@/integrations/form';
 
+const searchSchema = z.object({
+  redirect_url: z.string().optional(),
+});
+
 export const Route = createFileRoute('/_auth/orgs/create')({
   component: RouteComponent,
+  validateSearch: searchSchema,
 });
 
 const orgCreateSchema = z.object({
@@ -24,6 +29,7 @@ const orgCreateSchema = z.object({
 
 function RouteComponent() {
   const navigate = Route.useNavigate();
+  const { redirect_url } = Route.useSearch();
   const { queryClient } = Route.useRouteContext();
   const form = useAppForm({
     defaultValues: {
@@ -43,7 +49,7 @@ function RouteComponent() {
           onSuccess: () => {
             toast.success('Organization created successfully!');
             queryClient.resetQueries({ queryKey: ['__orgs__'] });
-            navigate({ to: '/orgs' });
+            navigate({ to: '/orgs', search: { redirect_url } });
           },
         }
       );

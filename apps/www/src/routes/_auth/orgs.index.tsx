@@ -10,10 +10,16 @@ import {
 } from '@workspace/ui/components/card';
 import { toast } from '@workspace/ui/components/sonner';
 import { useState } from 'react';
+import { z } from 'zod';
 import { authClient } from '@/integrations/auth';
+
+const searchSchema = z.object({
+  redirect_url: z.string().optional(),
+});
 
 export const Route = createFileRoute('/_auth/orgs/')({
   component: RouteComponent,
+  validateSearch: searchSchema,
   loader: async ({ context }) =>
     await context.queryClient.ensureQueryData({
       queryKey: ['__orgs__'],
@@ -29,6 +35,7 @@ export const Route = createFileRoute('/_auth/orgs/')({
 
 function RouteComponent() {
   const data = Route.useLoaderData();
+  const { redirect_url } = Route.useSearch();
   const navigate = Route.useNavigate();
   const [clicked, setClicked] = useState<undefined | string>(undefined);
 
@@ -54,7 +61,7 @@ function RouteComponent() {
                     await authClient.organization.setActive({
                       organizationId: org.id,
                     });
-                    navigate({ to: '/' });
+                    navigate({ to: redirect_url ?? '/' });
                   }}
                 >
                   {clicked === org.id ? (

@@ -71,7 +71,7 @@ export function AppSidebar({ children }: { children: React.ReactNode }) {
                 )}
               />
               <DropdownMenuContent>
-                <Link to="/orgs">
+                <Link search={{ redirect_url: location.href }} to="/orgs">
                   <DropdownMenuItem>
                     <ArrowsLeftRightIcon className="h-4 w-4" />
                     <span>ORGS</span>
