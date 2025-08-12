@@ -45,7 +45,8 @@ function RouteComponent() {
           password: value.password,
         },
         {
-          onSuccess: () => {
+          onSuccess: ({ data }) => {
+            localStorage.setItem('bearer_token', data.token);
             toast.success('Signed in successfully!');
             navigate({ to: '/orgs' });
           },

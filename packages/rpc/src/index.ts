@@ -22,57 +22,63 @@ const installApp = os
     })
   )
   .handler(async ({ input, context }) => {
-    if (context.session.activeOrganizationId === null) {
-      throw new ORPCError('UNAUTHORIZED', {
-        message: 'You must be logged in to install an app.',
+    try {
+      if (context.session.activeOrganizationId === null) {
+        throw new ORPCError('UNAUTHORIZED', {
+          message: 'You must be logged in to install an app.',
+        });
+      }
+      const response = await fetch(SENTRY_INSTALL_URL(input.installationId), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          grant_type: 'authorization_code',
+          code: input.code,
+          client_id: env.SENTRY_CLIENT_ID,
+          client_secret: env.SENTRY_CLIENT_SECRET,
+        }),
       });
-    }
-    const response = await fetch(SENTRY_INSTALL_URL(input.installationId), {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        grant_type: 'authorization_code',
-        code: input.code,
-        client_id: env.SENTRY_CLIENT_ID,
-        client_secret: env.SENTRY_CLIENT_SECRET,
-      }),
-    });
 
-    const responseData = await response.json();
-    const { data, error } =
-      await installationSchema.safeParseAsync(responseData);
-    if (error) {
+      const responseData = await response.json();
+      const { data, error } =
+        await installationSchema.safeParseAsync(responseData);
+      if (error) {
+        throw new ORPCError('INTERNAL_SERVER_ERROR', {
+          message: `Failed to parse installation data: ${JSON.stringify(error)}`,
+        });
+      }
+
+      const encryptedToken = encrypt(data.token);
+      const encryptedRefreshToken = encrypt(data.refreshToken);
+
+      await db.insert(installations).values({
+        id: uuidv7(),
+        sentryId: input.installationId,
+        organizationId: context.session.activeOrganizationId,
+        token: encryptedToken,
+        refreshToken: encryptedRefreshToken,
+        expiresAt: data.expiresAt,
+        dateCreated: data.dateCreated,
+      });
+
+      await fetch(SENTRY_VERIFY_URL(input.installationId), {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          status: 'installed',
+        }),
+      });
+
+      return;
+    } catch (error) {
       throw new ORPCError('INTERNAL_SERVER_ERROR', {
-        message: `Failed to parse installation data: ${JSON.stringify(error)}`,
+        message: `Failed to install app: ${JSON.stringify(error)}`,
       });
     }
-
-    const encryptedToken = encrypt(data.token);
-    const encryptedRefreshToken = encrypt(data.refreshToken);
-
-    await db.insert(installations).values({
-      id: uuidv7(),
-      sentryId: input.installationId,
-      organizationId: context.session.activeOrganizationId,
-      token: encryptedToken,
-      refreshToken: encryptedRefreshToken,
-      expiresAt: data.expiresAt,
-      dateCreated: data.dateCreated,
-    });
-
-    await fetch(SENTRY_VERIFY_URL(input.installationId), {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        status: 'installed',
-      }),
-    });
-
-    return;
   });
 
 export const router = {

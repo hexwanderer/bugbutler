@@ -3,7 +3,7 @@ import { db } from '@workspace/db';
 import * as authSchema from '@workspace/db/auth.schema';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
-import { organization } from 'better-auth/plugins';
+import { bearer, organization } from 'better-auth/plugins';
 import { reactStartCookies } from 'better-auth/react-start';
 
 export const auth = betterAuth({
@@ -18,6 +18,6 @@ export const auth = betterAuth({
   advanced: {
     cookiePrefix: 'bugbutler',
   },
-  plugins: [organization(), reactStartCookies()],
+  plugins: [bearer(), organization(), reactStartCookies()],
   trustedOrigins: ['http://localhost:57010'],
 });

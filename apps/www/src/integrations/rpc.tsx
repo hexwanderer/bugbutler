@@ -6,7 +6,9 @@ import type { router } from '@workspace/rpc';
 
 const link = new RPCLink({
   url: 'http://localhost:57000/rpc',
-  headers: {},
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('bearer_token') ?? ''}`,
+  },
 });
 
 const orpc: RouterClient<typeof router> = createORPCClient(link);

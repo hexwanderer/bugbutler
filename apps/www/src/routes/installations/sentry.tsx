@@ -1,6 +1,6 @@
 import { TrayArrowDownIcon } from '@phosphor-icons/react';
 import { useMutation } from '@tanstack/react-query';
-import { createFileRoute, useRouter } from '@tanstack/react-router';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { AnimatedButton } from '@workspace/ui/components/animated-button';
 import { Card, CardHeader, CardTitle } from '@workspace/ui/components/card';
 import { toast } from '@workspace/ui/components/sonner';
@@ -19,13 +19,13 @@ export const Route = createFileRoute('/installations/sentry')({
 
 function RouteComponent() {
   const { code, installationId } = Route.useSearch();
-  const router = useRouter();
+  const navigate = useNavigate();
   const mutation = useMutation(
     rpc.app.install.mutationOptions({
       onSuccess: () => {
         toast.success('Sentry installed successfully! Redirecting...');
         setTimeout(() => {
-          router.history.push('https://sentry.io/settings/');
+          navigate({ href: 'https://sentry.io/settings/' });
         }, 1000);
       },
       onError: (error) => {

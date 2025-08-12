@@ -29,14 +29,14 @@ export default defineNitroConfig({
     '@': resolve(process.cwd(), 'src'),
   },
   routeRules: {
-    '/api/**': {
-      cors: true,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': '*',
-        'Access-Control-Allow-Headers': '*',
-        'Access-Control-Allow-Credentials': 'true',
-      },
-    },
+    // '/api/**': {
+    //   cors: true,
+    //   headers: {
+    //     'Access-Control-Allow-Origin': 'http://localhost:57010',
+    //     'Access-Control-Allow-Methods': 'GET,POST,PUT,PATCH,DELETE,OPTIONS',
+    //     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    //     'Access-Control-Allow-Credentials': 'true',
+    //   },
+    // },
   },
 });
